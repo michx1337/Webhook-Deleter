@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Webhook</title>
+    <meta title="Webhook Deleter">
+    <meta name="title" content="Webhook Deleter">
+    <meta name="description" content="Delete Discord Webhook Fast">
+    <meta name="author" content="heal">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"></link>
+</head>
+<body class="bg-gray-200 flex items-center justify-center h-screen">
+    <div class="container mx-auto px-4 py-6 bg-white rounded-lg shadow-md" style="max-width: 400px;">
+        <h1 class="text-lg font-bold mb-4 text-center">Webhook Deleter</h1>
+        <div class="flex flex-col space-y-4">
+            <input type="text" id="webhook" class="border border-gray-300 rounded px-3 py-2 text-sm">
+            <div id="webhookError" class="text-red-500 text-sm hidden text-center">Webhook is required!</div>
+            <div id="webhookLengthError" class="text-red-500 text-sm hidden text-center">Invaild Webhook Format</div>
+            <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded text-sm" id="deleteButton">Delete</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#deleteButton').click(function () {
+                var webhook = $('#webhook').val();
+                if (!webhook) {
+                    $('#webhookError').removeClass('hidden');
+                    return;
+                } else {
+                    $('#webhookError').addClass('hidden');
+                }
+                if (webhook.length < 121) {
+                    $('#webhookLengthError').removeClass('hidden');
+                    return;
+                } else {
+                    $('#webhookLengthError').addClass('hidden');
+                }
+                $.ajax({
+                    url: webhook,
+                    type: 'DELETE',
+                    success: function (response) {
+                        toastr.success('Webhook deleted successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error('404 ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
